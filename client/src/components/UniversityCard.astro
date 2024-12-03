@@ -1,0 +1,123 @@
+---
+export interface Props {
+  date: string;
+  degree: string;
+  university: string;
+  gpa: string;
+  subUniversity?: string;
+  subUniversityDate?: string;
+  hoverColor?: string;
+}
+
+const { date, degree, university, gpa, subUniversity, subUniversityDate, hoverColor = '#5eead4' } = Astro.props;
+---
+<a href="https://www.bme.hu/en" target="_blank" class="university-card" style={`--hover-color: ${hoverColor};`}>
+    <div class="card-content">
+        <span class="date">{date}</span>
+        <div class="card-main">
+        <div class="card-header">
+            <h3>
+            {degree} · 
+            <span class="university-name" style={`--hover-color: ${hoverColor};`}>
+                {university}
+            </span>
+            </h3>
+            <span class="gpa">GPA: {gpa}</span>
+        </div>
+        {subUniversity && (
+            <div class="sub-university-wrapper">
+            <div class="sub-university-card">
+                <span class="sub-university">{subUniversity}</span>
+                <span class="sub-date">{subUniversityDate}</span>
+            </div>
+            </div>
+        )}
+        </div>
+    </div>
+</a>
+
+<style>
+.university-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 2rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.university-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.university-card:hover .card-header h3 {
+  color: var(--hover-color);
+}
+
+.university-name {
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+.university-card:hover .university-name {
+  color: var(--hover-color);
+}
+
+.card-content {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 2rem;
+}
+
+.date {
+  font-size: 0.85rem;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+.card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card-header h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--highlight-color);
+  margin: 0;
+}
+
+.card-header .gpa {
+  font-size: 0.85rem;
+  color: #5eead4;
+  margin-top: 1rem;
+}
+
+.sub-university-wrapper {
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.sub-university-card {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 9999px;
+  background: rgba(94, 234, 212, 0.1);
+  color: #5eead4;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  box-shadow: 0 5px 15px -5px rgba(2, 12, 27, 0.5);
+  max-width: fit-content;
+}
+
+.sub-university-card .sub-university {
+  font-weight: 500;
+}
+
+.sub-date {
+  color: #8892b0;
+}
+</style>

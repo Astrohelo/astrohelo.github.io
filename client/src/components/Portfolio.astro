@@ -1,0 +1,692 @@
+---
+// Import any images or assets you need
+import { Icon } from 'astro-icon/components'
+import ExperienceCard from '../components/ExperienceCard.astro';
+import UniversityCard from '../components/UniversityCard.astro';
+
+const experiences = [
+  {
+    date: '2023 — PRESENT',
+    position: 'Fullstack Engineer',
+    company: 'Mirango',
+    companyLink: 'https://www.mirango.hu/en/',
+    description: `Collaborate with a key client to design, build, and maintain their core product using a microservice architecture. 
+                  Develop backend features, implement automation processes, and deliver tailored solutions using feature flags to optimize workflows and enhance the end-user experience.`,
+    techStack: ['C#', '.NET', 'TypeScript', 'React', 'Microservice architecture', 'Agile development', 'CI/CD'],
+    hoverColor: '#3494c7'
+  },
+  {
+    date: 'Jan — Jul 2022',
+    position: 'Fullstack Engineer',
+    company: '4Flow',
+    companyLink: 'https://www.4flow.com/',
+    description: `Designed and implemented new features and backend functionality for a web application using Angular and Spring Boot. 
+                  Enhanced data visualization and usability by leveraging ngrx, Leaflet, and NG-Zorro, while creating and maintaining detailed application diagrams. 
+                  Collaborated in agile sprints to deliver updates and ensure seamless integration.`,
+    techStack: ['Angular', 'TypeScript', 'Spring Boot', 'Java', 'Leaflet', 'NG-ZORRO'],
+    hoverColor: '#fe6b01'
+  },
+  {
+    date: 'Jun — Sep 2021',
+    position: 'Test automation engineer intern',
+    company: '4Flow',
+    companyLink: 'https://www.4flow.com/',
+    description: `Implemented and maintained comprehensive E2E tests with Cypress, covering the application's core functionalities. 
+                  Integrated automated testing into the development workflow and Jenkins CI/CD pipeline, while also addressing bugs and enhancing code quality in both Angular and Spring Boot frameworks.`,
+    techStack: ['Cypress', 'Jenkins', 'Angular', 'Spring Boot', 'Jira'],
+    hoverColor: '#fe6b01'
+  },
+];
+
+---
+
+<div class="container">
+  <div class="cursor-glow"></div>
+  <div class="content-wrapper">
+    <!-- Fixed Left Sidebar -->
+    <div class="sidebar">
+        <div class="name-wrapper">
+            <h1>Axel VarAI</h1>
+            <h2>Software Engineer</h2>
+        </div>
+        <p class="subtitle">I build customer oriented, scalable and secure web applications.</p>
+        <nav class="nav-links">
+            <div class="nav-item-wrapper">
+                <a href="#about" class="nav-link">
+                  <div class="nav-line"/>
+                  <span class="nav-item">ABOUT</span>
+                </a>
+              </div>
+              <div class="nav-item-wrapper">
+                <a href="#experience" class="nav-link">
+                  <div class="nav-line"/>
+                  <span class="nav-item">EXPERIENCE</span>
+                </a>
+              </div>
+              <div class="nav-item-wrapper">
+                <a href="#studies" class="nav-link">
+                  <div class="nav-line"/>
+                  <span class="nav-item">STUDIES</span>
+                </a>
+              </div>
+        </nav>
+
+        <div class="skills-container">
+            <div class="skill-tag">C# .NET</div>
+            <div class="skill-tag">TypeScript</div>
+            <div class="skill-tag">Angular/React</div>
+            <div class="skill-tag">Microservice architecture</div>
+            <div class="skill-tag">2.5 years of work experience</div>
+            <div class="skill-tag">Entrepreunership</div>
+        </div>
+        
+        <div class="social-location-container">
+          <div class="social-links">
+            <a href="https://github.com/Astrohelo" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
+              <Icon name="mdi:github" />
+            </a>
+            <a href="https://www.linkedin.com/in/axel-varai/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
+              <Icon name="mdi:linkedin" />
+            </a>
+          </div>
+          <div class="location">
+            <Icon name="mdi:map-marker" />
+            <span>Budapest, Hungary</span>
+          </div>
+        </div>        
+    </div>
+
+    <!-- Scrollable Right Content -->
+    <main class="content">
+        <section id="about">
+            <p>
+              I’m a recent Master’s graduate in Computer Engineering with a passion for building customer oriented, real-world applications. 
+              I thrive in startup-like environments, where agile development empowers me to create impactful solutions that truly make a difference.
+            </p>
+            <br/>
+            <p>
+              Currently I am working as a Fullstack Engineer at 
+              <a href="https://www.mirango.hu/en/" class="link-white" target="_blank">Mirango</a>, specializing in web automation. 
+              My work spans developing robust backend systems with C# and .NET, as well as designing seamless frontend experiences using React.
+              I take pride in delivering custom solutions on time and within budget.
+            </p>            
+            <br/>
+            <div class="magic-card-container">
+              <div class="card-content">
+                <p class="default-text" id="default-text">
+                  In my spare time, I like to push myself in different ways. 
+                  I always have a side project in progress and a thousand more ideas waiting in the wings. 
+                  While I’m a big fan of the gym, bouldering is the sport that truly gets my adrenaline going.
+                </p>
+                <p class="quote-text" id="quote-text"></p>
+                <span class="author" id="author">- Socrates</span>
+              </div>
+            </div>               
+            <br/>
+            <br/>      
+        </section>
+        <section id="experience">
+          <div class="experience-cards">
+            {experiences.map((experience) => (
+              <div class="experience-card-wrapper">
+                <ExperienceCard {...experience} />
+              </div>
+            ))}
+          </div>
+          <br/>
+        </section>        
+        <section id="studies">
+        
+          <!-- Education Section -->
+          <div class="education">
+            <div class="education-list">
+              <UniversityCard
+                date="2023 - Jan 2025"
+                degree="Master's in Computer Engineering"
+                university="Budapest University of Technology and Economics"
+                gpa="4.27/5.00"
+                subUniversity="Istanbul Teknik University"
+                subUniversityDate="Fall 2024"
+              />
+              <UniversityCard
+                date="2019 - Jan 2023"
+                degree="Bachelor's in Computer Engineering"
+                university="Budapest University of Technology and Economics"
+                gpa="4.32/5.00"
+                subUniversity="National University of Singapore"
+                subUniversityDate="Fall 2022"
+              />
+            </div>
+          </div>
+        </section>
+             
+          <p class="references">
+            Inspired by <a href="https://brittanychiang.com" class="highlight" target="_blank">Brittany Chiang's</a> portfolio. Built with 
+            <a href="https://astro.build/" class="highlight" target="_blank">Astro</a>, coded in 
+            <a href="https://cursor.so/" class="highlight" target="_blank">Cursor</a>.
+          </p>
+    </main>
+  </div>
+</div>
+
+<style>
+  .sidebar {
+    position: fixed;
+    width: 50%; /* Changed to 50% width */
+    height: 100vh;
+    box-sizing: border-box;
+  }
+
+  .content {
+    margin-left: 50%; /* Align with sidebar width */
+    width: 50%; /* Set explicit width */
+    box-sizing: border-box;
+  }
+
+  .content p {
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0;
+  }
+
+  .content-wrapper {
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+  }
+
+  .sidebar {
+    position: fixed;
+    width: calc(35% - 4rem); /* Adjusted width */
+    height: 100vh;
+    box-sizing: border-box;
+  }
+
+  .name-wrapper {
+    margin-bottom: 1rem;
+  }
+
+  .name-wrapper h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    color: var(--highlight-color);
+  }
+
+  .name-wrapper h2 {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+    color: var(--highlight-color);
+  }
+
+  .subtitle {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin: 1rem 0;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 4rem;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none; 
+  }
+
+  .nav-item-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .nav-line {
+    height: 2px;
+    width: 30px;
+    background-color: var(--text-color);
+    transition: all 0.2s ease;
+  }
+
+  .nav-item-wrapper:hover .nav-line,
+  .nav-item-wrapper:has(.nav-item.active) .nav-line {
+    width: 60px;
+    background-color: var(--highlight-color);
+  }
+  .nav-item-wrapper:hover .nav-line,
+  .nav-item-wrapper:hover .nav-item,
+  .nav-item.active {
+    color: white; /* Hover and active text color */
+  }
+
+  .nav-item {
+    color: var(--text-color);
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+  }
+
+  .nav-item:hover,
+  .nav-item.active {
+    color: var(--highlight-color);
+  }
+
+  section {
+    min-height: 60vh;
+  }
+
+  .link-white {
+    color: white; /* Default text color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease; /* Smooth color transition */
+  }
+
+  .link-white:hover {
+    color: var(--hover-highlight-color); /* Use the highlight color on hover */
+  }
+
+
+  .container {
+    min-height: 100vh;
+    padding: 80px 96px;
+    margin-left: clamp(0px, calc((100vw - 1024px) * 0.19), 640px);
+    margin-right: clamp(0px, calc((100vw - 1024px) * 0.19), 640px);
+  }
+
+  @media (max-width: 1024px) {
+    .container {
+      padding: 80px 48px;
+    }
+
+    .content-wrapper {
+      display: block; /* Change to block layout */
+    }
+
+    .sidebar {
+      position: relative;
+      width: 100%;
+      height: auto;
+      padding: 2rem 0;
+    }
+
+    .content {
+      margin-left: 0;
+      padding: 2rem 0;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 48px 24px;
+    }
+  }
+  .social-location-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4rem;
+}
+
+  .location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-color);
+    font-size: 0.7rem;
+    padding-right: 2rem;
+  }
+
+  .location [data-icon] {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    padding-top: 2rem;
+  }
+
+  .skill-tag {
+    background-color: rgba(var(--text-color-rgb), 0.1);
+    color: var(--text-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+  }
+
+  .skill-tag:hover {
+    background-color: rgba(var(--highlight-color-rgb), 0.2);
+    color: var(--highlight-color);
+  }
+
+  .social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+  }
+
+  .social-links a {
+    color: var(--text-color);
+    transition: color 0.3s ease;
+  }
+
+  .social-links a:hover {
+    color: var(--highlight-color);
+  }
+
+  .social-links [data-icon] {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .cursor-glow {
+    position: fixed;
+    pointer-events: none;
+    width: 800px;
+    height: 800px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      circle,
+      rgba(99, 102, 241, 0.15) 0%,
+      rgba(99, 102, 241, 0.075) 30%,
+      transparent 65%
+    );
+    border-radius: 50%;
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+    will-change: transform, opacity;
+  }
+
+  .experience-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative; 
+}
+.experience-card-wrapper {
+  flex: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* When one card is hovered, dim others */
+.experience-cards:hover .experience-card-wrapper:not(:hover) {
+  opacity: 0.3; /* Dim effect for non-hovered cards */
+  filter: grayscale(50%); /* Optional: add grayscale for more focus */
+}
+
+
+  .card-header h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--highlight-color);
+    margin: 0;
+  }
+
+  .company-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .card-description {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0;
+  }
+
+  .tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .tech-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    color: #5eead4; /* Teal color for tags */
+    background: rgba(94, 234, 212, 0.1); /* Slightly transparent teal background */
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+  }
+
+
+  @media (max-width: 768px) {
+    .card-content {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .date {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  
+  .references {
+    text-align: center;
+  font-size: 0.7rem;
+  justify-content: right;
+  line-height: 1.6;
+  color: var(--text-color);
+}
+
+.references .highlight {
+  color: inherit;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.references .highlight:hover {
+  color: #5eead4; /* Highlight color on hover */
+}
+.magic-card-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px; /* Restrict width */
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden; /* Prevent content overflow */
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+}
+
+.magic-card-container:hover {
+  transform: scale(1.05); /* Slight zoom */
+  box-shadow: 0 0 25px rgba(94, 234, 212, 0.8); /* Futuristic glow */
+  background: rgba(14, 17, 22, 0.9); /* Slightly dark futuristic background */
+}
+
+.card-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.default-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-color);
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.quote-text {
+  padding: 0.5rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #5eead4; /* Same color as the author */
+  opacity: 0;
+  overflow: hidden; /* Prevent overflowing text */
+  transition: opacity 0.3s ease;
+}
+
+.author {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 0.9rem;
+  color: #5eead4; /* Futuristic glowing color */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+
+.magic-card-container:hover .default-text {
+  opacity: 0; /* Hide default text on hover */
+}
+
+.magic-card-container:hover .quote-text,
+.magic-card-container:hover .author {
+  opacity: 1; /* Show quote and author */
+}
+
+
+
+.card-content {
+  display: flex;
+  gap: 1rem;
+}
+
+.date {
+  font-size: 0.85rem;
+  color: #64ffda;
+}
+
+.card-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-header h3 {
+  font-size: 1rem;
+  color: #ccd6f6;
+  margin: 0;
+}
+
+.card-header .university-name {
+  color: #64ffda;
+}
+
+.card-description {
+  font-size: 0.85rem;
+  color: #8892b0;
+}
+
+
+</style>
+
+<script>
+// Highlight active section in navigation
+const sections = document.querySelectorAll('section');
+const navLinks = document.querySelectorAll('.nav-item');
+
+const observerOptions = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.4, // Adjust threshold to detect center intersection
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach((link) => {
+        link.classList.remove('active');
+        const wrapper = link.closest('.nav-item-wrapper');
+        if (wrapper) {
+          const targetLink = wrapper.querySelector('.nav-item');
+          if (targetLink && targetLink.textContent) {
+            if (targetLink.textContent.trim().toUpperCase() === id.toUpperCase()) {
+              targetLink.classList.add('active');
+            }
+          }
+        }
+      });
+    }
+  });
+}, observerOptions);
+
+sections.forEach((section) => observer.observe(section));
+
+
+</script> 
+<script>
+    // Select the cursor glow element
+const cursorGlow = document.querySelector('.cursor-glow');
+
+let currentX = 0, currentY = 0;
+let targetX = 0, targetY = 0;
+document.addEventListener('mousemove', (e) => {
+  targetX = e.clientX;
+  targetY = e.clientY;
+});
+
+function animateCursor() {
+  currentX += (targetX - currentX) * 0.1;
+  currentY += (targetY - currentY) * 0.1;
+  if (cursorGlow instanceof HTMLElement) {
+    cursorGlow.style.left = `${currentX}px`;
+    cursorGlow.style.top = `${currentY}px`;
+  }
+  requestAnimationFrame(animateCursor);
+}
+// Start the animation loop
+animateCursor();
+
+  </script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const magicCardContainer = document.querySelector('.magic-card-container') as HTMLElement | null;
+  const defaultText = document.querySelector('#default-text') as HTMLElement | null;
+  const quoteText = document.querySelector('#quote-text') as HTMLElement | null;
+  const author = document.querySelector('#author') as HTMLElement | null;
+
+  if (!magicCardContainer || !quoteText || !defaultText || !author) return;
+
+  const quote = "It is a shame for a man to grow old without seeing the beauty and strength of which his body is capable.";
+  let typingIndex = 0;
+  let typingTimeout: number | undefined;
+
+  const typeQuote = (): void => {
+    if (typingIndex < quote.length) {
+      quoteText.textContent += quote[typingIndex];
+      typingIndex++;
+      typingTimeout = window.setTimeout(typeQuote, 30); // Adjust typing speed here
+    }
+  };
+
+  const resetQuote = (): void => {
+    if (typingTimeout !== undefined) clearTimeout(typingTimeout); // Clear timeout
+    quoteText.textContent = ''; // Clear quote
+    typingIndex = 0; // Reset typing index
+  };
+
+  magicCardContainer.addEventListener('mouseenter', () => {
+    resetQuote();
+    typeQuote();
+  });
+
+  magicCardContainer.addEventListener('mouseleave', resetQuote);
+});
+</script>
+
