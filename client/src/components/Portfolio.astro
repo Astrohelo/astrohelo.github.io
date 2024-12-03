@@ -160,10 +160,22 @@ const experiences = [
           </div>
         </section>
              
+        <div class="mystery-button-container">
+          <button id="mystery-button">If you scrolled this far, you might as well press me.</button>
+        </div>
+        <canvas id="pong-game" style="display: none;"></canvas>
+        <div class="back-button-container" style="display: none;">
+          <button id="back-button">End Pong</button>
+        </div>        
+        <br/>        
+
           <p class="references">
             Inspired by <a href="https://brittanychiang.com" class="highlight" target="_blank">Brittany Chiang's</a> portfolio. Built with 
             <a href="https://astro.build/" class="highlight" target="_blank">Astro</a>, coded in 
-            <a href="https://cursor.so/" class="highlight" target="_blank">Cursor</a>.
+            <a href="https://cursor.so/" class="highlight" target="_blank">Cursor</a>, deployed with 
+            <a href="https://pages.github.com/" class="highlight" target="_blank">Github Pages</a>.
+            <br/>
+            All rights belong to <a href="https://atari.com/" class="highlight" target="_blank">Atari</a> regarding the Sound effects.
           </p>
     </main>
   </div>
@@ -588,6 +600,61 @@ const experiences = [
   font-size: 0.85rem;
   color: #8892b0;
 }
+.mystery-button-container {
+  display: none;
+  justify-content: center;
+  margin: 2rem 0;
+  z-index: 10;
+}
+
+#mystery-button {
+  box-shadow: 0 0 25px rgba(94, 234, 212, 0.8); /* Futuristic glow */
+  background: rgba(14, 17, 22, 0.9);
+  opacity: 1;
+  visibility: visible;
+  color: #1c355a;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+#mystery-button:hover {
+  background-color: #0a192f;
+  color: #64ffda;
+}
+
+#pong-game {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+.back-button-container {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  z-index: 1000;
+}
+
+#back-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#back-button:hover {
+  background-color: #e64a19;
+}
 
 
 </style>
@@ -687,3 +754,204 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+<script>
+  // Yes I totally chatGPTd this game, but it turned out fun, right?
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttonContainer = document.querySelector('.mystery-button-container') as HTMLElement | null;
+    const button = document.getElementById('mystery-button') as HTMLButtonElement | null;
+
+    if (!buttonContainer || !button) {
+        console.error('Mystery button or container is missing.');
+        return;
+    }
+    if (window.innerWidth > 1024) {
+        buttonContainer.style.display = 'flex'; 
+    } 
+    button.addEventListener('click', () => {
+    console.log('Mystery button clicked!');
+    const pongCanvas = document.getElementById('pong-game') as HTMLCanvasElement | null;
+    const backButtonContainer = document.querySelector('.back-button-container') as HTMLElement | null;
+    if (pongCanvas&& backButtonContainer) {
+      pongCanvas.style.display = 'block'; // Show Pong canvas
+      backButtonContainer.style.display = 'block'; // Show back button
+      startPong(pongCanvas); // Call the Pong game logic
+    } else {
+      console.error('Pong canvas is missing.');
+    }
+
+    const backButton = document.getElementById('back-button') as HTMLButtonElement | null;
+    backButton?.addEventListener('click', () => {
+      location.reload()
+    });
+  });
+});
+
+  // Game stop logic
+  let animationId: number | null = null;
+
+  function stopPong() {
+    if (animationId !== null) {
+      cancelAnimationFrame(animationId); // Stop the animation frame
+      animationId = null;
+    }
+
+    // Reset scores or other game state if needed
+    console.log('Game stopped and reset.');
+  }
+
+
+function startPong(pongCanvas: HTMLCanvasElement): void {
+  const ctx = pongCanvas.getContext('2d');
+  if (!ctx) {
+    console.error('Unable to get 2D context for Pong canvas.');
+    return;
+  }
+
+  // Load sound effects
+  const paddleHitSound = new Audio('/sounds/paddle.wav'); 
+  const wallHitSound = new Audio('/sounds/wall.wav');     
+  const scoreSound = new Audio('/sounds/score.wav');        
+  paddleHitSound.volume = 0.5; // Max volume
+  wallHitSound.volume = 0.5;
+  scoreSound.volume = 0.5;
+// Test playback on button click
+
+  // Set canvas dimensions
+  const width = pongCanvas.width = window.innerWidth;
+  const height = pongCanvas.height = window.innerHeight;
+
+  const ballSize = 10;
+
+  // Dynamically calculate paddle height based on native scrollbar size
+  const paddleHeight =
+    (window.innerHeight / document.documentElement.scrollHeight) * window.innerHeight;
+
+  let ballX = width / 2;
+  let ballY = height / 2;
+  let ballSpeedX = 6;
+  let ballSpeedY = 6;
+
+  let computerY = height / 2 - paddleHeight / 2; // AI paddle position
+  let playerY = height / 2 - paddleHeight / 2; // Player paddle position
+
+  const computerSpeed = 4; // Maximum speed of AI paddle
+
+  // Initialize scores
+  let playerScore = 0;
+  let computerScore = 0;
+
+  // Update player's paddle position based on scroll
+  function updatePlayerPaddle() {
+    const scrollY = window.scrollY; // Get vertical scroll position
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+
+    // Map scroll position to canvas height
+    playerY = (scrollY / maxScroll) * (height - paddleHeight);
+
+    // Ensure the paddle stays within bounds
+    if (playerY < 0) playerY = 0;
+    if (playerY + paddleHeight > height) playerY = height - paddleHeight;
+  }
+
+  // Improved AI logic
+  function updateComputerPaddle() {
+    const targetY = ballY - paddleHeight / 2;
+
+    // Move the computer paddle toward the predicted target
+    if (computerY + paddleHeight / 2 < targetY) {
+      computerY += Math.min(computerSpeed, targetY - (computerY + paddleHeight / 2));
+    } else if (computerY + paddleHeight / 2 > targetY) {
+      computerY -= Math.min(computerSpeed, (computerY + paddleHeight / 2) - targetY);
+    }
+
+    // Ensure the paddle stays within bounds
+    if (computerY < 0) computerY = 0;
+    if (computerY + paddleHeight > height) computerY = height - paddleHeight;
+  }
+
+  // Draw scores
+  function drawScore() {
+    if (!ctx) return;
+    ctx.font = 'bold 50px Inter';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${computerScore}`, width / 4, 60); // AI score
+    ctx.fillText(`${playerScore}`, (3 * width) / 4, 60); // Player score
+  }
+
+  // Play sound effect
+  function playSound(sound: HTMLAudioElement) {
+    sound.currentTime = 0; // Reset the sound to the start
+    sound.play();
+  }
+
+  // Game loop
+  function draw() {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, width, height);
+
+    // Draw the ball
+    ctx.fillRect(ballX, ballY, ballSize, ballSize);
+
+    // Draw paddles
+    ctx.fillStyle = 'white';
+    ctx.fillRect(width - 20, playerY, 10, paddleHeight); // Player paddle
+    ctx.fillRect(10, computerY, 10, paddleHeight); // AI paddle
+
+    // Draw scores
+    drawScore();
+
+    // Ball movement
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
+
+    // Bounce on top and bottom walls
+    if (ballY <= 0 || ballY + ballSize >= height) {
+      ballSpeedY = -ballSpeedY;
+      playSound(wallHitSound); // Play wall hit sound
+    }
+
+    // Update AI paddle position
+    updateComputerPaddle();
+
+    // Ball collision with paddles
+    if (
+      (ballX + ballSize >= width - 20 && ballY >= playerY && ballY <= playerY + paddleHeight) ||
+      (ballX <= 20 && ballY >= computerY && ballY <= computerY + paddleHeight)
+    ) {
+      ballSpeedX = -ballSpeedX;
+
+      // Slightly increase ball speed on every collision
+      ballSpeedX *= 1.05;
+      ballSpeedY *= 1.05;
+
+      playSound(paddleHitSound); // Play paddle hit sound
+    }
+
+    // Ball reset if it goes out of bounds
+    if (ballX <= 0) {
+      playerScore += 1; // Player scores
+      playSound(scoreSound); // Play score sound
+      resetBall();
+    } else if (ballX >= width) {
+      computerScore += 1; // AI scores
+      playSound(scoreSound); // Play score sound
+      resetBall();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  // Reset ball position and speed
+  function resetBall() {
+    ballX = width / 2;
+    ballY = height / 2;
+    ballSpeedX = ballSpeedX > 0 ? 6 : -6;
+    ballSpeedY = ballSpeedY > 0 ? 6 : -6;
+  }
+
+  // Update paddle position on scroll
+  window.addEventListener('scroll', updatePlayerPaddle);
+
+  draw(); // Start the game loop
+}
+</script>
