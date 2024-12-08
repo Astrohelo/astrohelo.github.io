@@ -46,7 +46,9 @@ const experiences = [
     <!-- Fixed Left Sidebar -->
     <div class="sidebar">
         <div class="name-wrapper">
-            <h1>Axel VarAI</h1>
+          <h1>
+            Axel Var<span class="ai">ai</span>
+          </h1>
             <h2>Software Engineer</h2>
         </div>
         <p class="subtitle">I build customer oriented, scalable and secure web applications.</p>
@@ -212,23 +214,62 @@ const experiences = [
     height: 100vh;
     box-sizing: border-box;
   }
-
   .name-wrapper {
     margin-bottom: 1rem;
-  }
+}
 
-  .name-wrapper h1 {
+.name-wrapper h1 {
     font-size: 2.5rem;
     margin: 0;
     color: var(--highlight-color);
-  }
+}
 
-  .name-wrapper h2 {
+.name-wrapper h2 {
     font-size: 1.5rem;
     margin: 0.5rem 0;
     color: var(--highlight-color);
-  }
+}
+/* AI Gradient and Effect */
+.ai {
+    font-weight: bold;
+    background: linear-gradient(120deg, #ff007c, #7c00ff, #007aff, #00ffc3, #ff007c);
+    background-size: 300% 300%; /* Slower gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-flow 8s ease infinite;
+    position: relative;
+}
 
+/* Glow removed and replaced with a sharp border effect */
+.ai::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit; /* Matches the gradient */
+    -webkit-mask: text;
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+    filter: blur(1px);
+    z-index: -1;
+    opacity: 0.8;
+    animation: gradient-flow 8s ease infinite;
+}
+
+/* Smooth Gradient Flow Animation */
+@keyframes gradient-flow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
   .subtitle {
     color: var(--text-color);
     font-size: 1.1rem;
