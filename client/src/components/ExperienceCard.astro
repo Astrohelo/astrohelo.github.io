@@ -120,4 +120,35 @@ const { date, position, company, companyLink, description, techStack, hoverColor
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
 }
+
+@media (max-width: 425px) {
+  .card-content {
+    grid-template-columns: 1fr; /* Single-column layout */
+    gap: 1rem; /* Reduce spacing between elements */
+  }
+
+  .date {
+    display: block; /* Allow the date to wrap under the title */
+    font-size: 0.75rem; /* Adjust font size for smaller screens */
+    margin-bottom: 0.5rem; /* Add spacing below the date */
+  }
+
+  .card-header h3 {
+    font-size: 0.9rem; /* Slightly reduce header size */
+  }
+
+  .card-description {
+    font-size: 0.8rem; /* Make description text smaller */
+  }
+
+  .tech-stack {
+    gap: 0.25rem; /* Reduce spacing between tags */
+  }
+
+  .tech-tag {
+    font-size: 0.7rem; /* Make tags smaller */
+    padding: 0.2rem 0.5rem; /* Reduce padding for smaller tags */
+  }
+}
+
 </style>

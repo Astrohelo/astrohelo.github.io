@@ -120,4 +120,40 @@ const { date, degree, university, gpa, subUniversity, subUniversityDate, hoverCo
 .sub-date {
   color: #8892b0;
 }
+
+@media (max-width: 425px) {
+  .card-content {
+    grid-template-columns: 1fr; /* Switch to single-column layout */
+    gap: 1rem; /* Adjust spacing between elements */
+  }
+
+  .date {
+    display: block; /* Allow the date to wrap below the title */
+    font-size: 0.75rem; /* Adjust font size */
+    margin-bottom: 0.5rem; /* Add spacing below the date */
+  }
+
+  .card-header h3 {
+    font-size: 0.9rem; /* Reduce font size for header */
+    line-height: 1.4; /* Adjust line height for better readability */
+  }
+
+  .card-header .gpa {
+    margin-top: 0.5rem; /* Reduce spacing above GPA */
+    font-size: 0.8rem; /* Adjust GPA font size */
+  }
+
+  .sub-university-card {
+    flex-direction: column; /* Stack sub-university and date vertically */
+    align-items: flex-start; /* Align items to the start */
+    padding: 0.3rem 0.5rem; /* Adjust padding */
+    gap: 0.25rem; /* Reduce spacing between elements */
+    font-size: 0.7rem; /* Adjust font size */
+  }
+
+  .sub-university-card .sub-date {
+    font-size: 0.7rem; /* Adjust sub-date font size */
+  }
+}
+
 </style>
