@@ -90,11 +90,14 @@ const experiences = [
             <a href="https://www.linkedin.com/in/axel-varai/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
               <Icon name="mdi:linkedin" />
             </a>
-          </div>
-          <div class="location">
+            <div class="location">
             <Icon name="mdi:map-marker" />
             <span>Budapest, Hungary</span>
+            </div>
           </div>
+          
+            
+          
         </div>        
     </div>
 
@@ -102,7 +105,7 @@ const experiences = [
     <main class="content">
         <section id="about">
             <p>
-              I’m a recent Master’s graduate in Computer Engineering with a passion for building customer oriented, real-world applications. 
+              I'm a recent Master's graduate in Computer Engineering with a passion for building customer oriented, real-world applications. 
               I thrive in startup-like environments, where agile development empowers me to create impactful solutions that truly make a difference.
             </p>
             <br/>
@@ -118,7 +121,7 @@ const experiences = [
                 <p class="default-text" id="default-text">
                   In my spare time, I like to push myself in different ways. 
                   I always have a side project in progress and a thousand more ideas waiting in the wings. 
-                  While I’m a big fan of the gym, bouldering is the sport that truly gets my adrenaline going.
+                  While I'm a big fan of the gym, bouldering is the sport that truly gets my adrenaline going.
                 </p>
                 <p class="quote-text" id="quote-text"></p>
                 <span class="author" id="author">- Socrates</span>
@@ -697,6 +700,58 @@ const experiences = [
   background-color: #e64a19;
 }
 
+@media (max-width: 768px) {
+  .nav-links {
+    display: none; /* Hide navigation links */
+  }
+
+  .content section {
+    position: relative;
+    margin-top: 2rem;
+  }
+
+  .content section::before {
+    content: attr(id); /* Use section ID as label */
+    position: sticky;
+    top: 0;
+    display: block;
+    padding: 1rem 0;
+    background: rgba( 0.8); /* Dark background with some transparency */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: var(--highlight-color);
+    z-index: 10;
+  }
+
+  .container {
+    padding: 48px 24px;
+  }
+
+  .sidebar {
+    padding: 1rem 0;
+  }
+
+  .content {
+    margin-top: 2rem;
+  }
+
+  /* Adjust section spacing */
+  #about {
+    order: 1;
+  }
+
+  #experience {
+    order: 2;
+  }
+
+  #studies {
+    order: 3;
+  }
+}
 
 </style>
 
@@ -708,33 +763,51 @@ const navLinks = document.querySelectorAll('.nav-item');
 const observerOptions = {
   root: null,
   rootMargin: '0px',
-  threshold: 0.4, // Adjust threshold to detect center intersection
+  threshold: 0.4,
 };
 
+// Function to update active state
+const updateActiveState = (id) => {
+  navLinks.forEach((link) => {
+    link.classList.remove('active');
+    const wrapper = link.closest('.nav-item-wrapper');
+    if (wrapper) {
+      const targetLink = wrapper.querySelector('.nav-item');
+      if (targetLink && targetLink.textContent) {
+        if (targetLink.textContent.trim().toUpperCase() === id.toUpperCase()) {
+          targetLink.classList.add('active');
+        }
+      }
+    }
+  });
+};
+
+// Intersection Observer for scroll-based highlighting
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
-      const id = entry.target.id;
-      navLinks.forEach((link) => {
-        link.classList.remove('active');
-        const wrapper = link.closest('.nav-item-wrapper');
-        if (wrapper) {
-          const targetLink = wrapper.querySelector('.nav-item');
-          if (targetLink && targetLink.textContent) {
-            if (targetLink.textContent.trim().toUpperCase() === id.toUpperCase()) {
-              targetLink.classList.add('active');
-            }
-          }
-        }
-      });
+      updateActiveState(entry.target.id);
     }
   });
 }, observerOptions);
 
 sections.forEach((section) => observer.observe(section));
 
+// Click-based highlighting
+document.querySelectorAll('.nav-link').forEach((link) => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const href = link.getAttribute('href');
+    if (href) {
+      const targetId = href.replace('#', '');
+      updateActiveState(targetId);
+      // Smooth scroll to section
+      document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+</script>
 
-</script> 
 <script>
     // Select the cursor glow element
 const cursorGlow = document.querySelector('.cursor-glow');
@@ -995,4 +1068,26 @@ function startPong(pongCanvas: HTMLCanvasElement): void {
 
   draw(); // Start the game loop
 }
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Only run this code for mobile devices
+  if (window.innerWidth <= 768) {
+    const content = document.querySelector('.content');
+    if (content) {
+      // Get all sections
+      const sections = content.querySelectorAll('section');
+      // Convert NodeList to Array and sort by desired order
+      const sortedSections = Array.from(sections).sort((a, b) => {
+        const order = { about: 1, experience: 2, studies: 3 };
+        return order[a.id] - order[b.id];
+      });
+      // Reappend sections in correct order
+      sortedSections.forEach(section => {
+        content.appendChild(section);
+      });
+    }
+  }
+});
 </script>
