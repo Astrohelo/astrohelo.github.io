@@ -544,16 +544,15 @@ const experiences = [
 }
 
 .references .highlight:hover {
-  color: #5eead4; /* Highlight color on hover */
+  color: #5eead4; 
 }
 .magic-card-container {
   position: relative;
   width: 100%;
-  max-width: 600px; /* Restrict width */
   border-radius: 12px;
   background: transparent;
   cursor: pointer;
-  overflow: hidden; /* Prevent content overflow */
+  overflow: hidden; 
   transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
 }
 
@@ -762,19 +761,20 @@ const navLinks = document.querySelectorAll('.nav-item');
 
 const observerOptions = {
   root: null,
-  rootMargin: '0px',
-  threshold: 0.4,
+  // Adjust rootMargin to better handle the top section
+  rootMargin: '-10% 0px -20% 0px',
+  threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5],
 };
 
 // Function to update active state
-const updateActiveState = (id) => {
+const updateActiveState = (id: string) => {
   navLinks.forEach((link) => {
-    link.classList.remove('active');
     const wrapper = link.closest('.nav-item-wrapper');
     if (wrapper) {
       const targetLink = wrapper.querySelector('.nav-item');
       if (targetLink && targetLink.textContent) {
-        if (targetLink.textContent.trim().toUpperCase() === id.toUpperCase()) {
+        targetLink.classList.remove('active');
+        if (targetLink.textContent.trim().toLowerCase() === id.toLowerCase()) {
           targetLink.classList.add('active');
         }
       }
@@ -782,29 +782,138 @@ const updateActiveState = (id) => {
   });
 };
 
-// Intersection Observer for scroll-based highlighting
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      updateActiveState(entry.target.id);
+// Calculate section positions and store them
+const getSectionPositions = () => {
+  const positions = new Map();
+  sections.forEach(section => {
+    const rect = section.getBoundingClientRect();
+    positions.set(section.id, {
+      top: rect.top + window.scrollY,
+      bottom: rect.bottom + window.scrollY,
+      height: rect.height
+    });
+  });
+  return positions;
+};
+
+let sectionPositions = getSectionPositions();
+
+// Recalculate section positions on resize
+window.addEventListener('resize', () => {
+  sectionPositions = getSectionPositions();
+});
+
+// Function to get current section
+const getCurrentSection = () => {
+  const scrollPosition = window.scrollY + (window.innerHeight * 0.3);
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+  
+  // Check if we're at the bottom of the page
+  if ((window.innerHeight + window.scrollY) >= documentHeight - 50) {
+    return document.getElementById('studies'); // Highlight last section
+  }
+  
+  // Special case for being at the top of the page
+  if (window.scrollY < windowHeight * 0.1) {
+    return document.getElementById('about');
+  }
+
+  let currentSection = null;
+  sectionPositions.forEach((position, id) => {
+    const section = document.getElementById(id);
+    if (!section) return;
+
+    const sectionTop = position.top;
+    const sectionBottom = position.bottom;
+    
+    // Check if the section is currently visible
+    if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
+      currentSection = section;
     }
   });
+
+  return currentSection;
+};
+
+// Intersection Observer for scroll-based highlighting
+const observer = new IntersectionObserver((entries) => {
+  // Only update if we're not currently in a smooth scroll
+  if (!isScrolling) {
+    const currentSection = getCurrentSection();
+    if (currentSection) {
+      updateActiveState(currentSection.id);
+    }
+  }
 }, observerOptions);
 
 sections.forEach((section) => observer.observe(section));
 
-// Click-based highlighting
+// Track if we're currently smooth scrolling
+let isScrolling = false;
+
+// Click-based highlighting and smooth scrolling
 document.querySelectorAll('.nav-link').forEach((link) => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
     const href = link.getAttribute('href');
     if (href) {
       const targetId = href.replace('#', '');
-      updateActiveState(targetId);
-      // Smooth scroll to section
-      document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
+      const targetSection = document.getElementById(targetId);
+      
+      if (targetSection) {
+        isScrolling = true;
+        updateActiveState(targetId);
+        
+        // Calculate offset based on window size and section
+        const offset = window.innerWidth <= 768 ? 60 : 0;
+        const targetPosition = targetSection.offsetTop - offset;
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+
+        // Reset scrolling flag after animation
+        setTimeout(() => {
+          isScrolling = false;
+        }, 1000); // Adjust timing based on your scroll animation duration
+      }
     }
   });
+});
+
+// Update active state on page load
+window.addEventListener('load', () => {
+  const hash = window.location.hash.replace('#', '') || 'about';
+  const targetSection = document.getElementById(hash);
+  if (targetSection) {
+    updateActiveState(hash);
+    // Smooth scroll to hash location if present
+    const offset = window.innerWidth <= 768 ? 60 : 0;
+    const targetPosition = targetSection.offsetTop - offset;
+    window.scrollTo({
+      top: targetPosition,
+      behavior: 'smooth'
+    });
+  }
+});
+
+// Debounced scroll handler
+let scrollTimeout: number | null = null;
+window.addEventListener('scroll', () => {
+  if (scrollTimeout) {
+    window.clearTimeout(scrollTimeout);
+  }
+
+  scrollTimeout = window.setTimeout(() => {
+    if (!isScrolling) {
+      const currentSection = getCurrentSection();
+      if (currentSection) {
+        updateActiveState(currentSection.id);
+      }
+    }
+  }, 50); // Reduced timeout for more responsive updates
 });
 </script>
 
