@@ -991,7 +991,6 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonContainer.style.display = 'flex'; 
     } 
     button.addEventListener('click', () => {
-    console.log('Mystery button clicked!');
     const pongCanvas = document.getElementById('pong-game') as HTMLCanvasElement | null;
     const backButtonContainer = document.querySelector('.back-button-container') as HTMLElement | null;
     if (pongCanvas&& backButtonContainer) {
@@ -1014,12 +1013,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function stopPong() {
     if (animationId !== null) {
-      cancelAnimationFrame(animationId); // Stop the animation frame
+      cancelAnimationFrame(animationId); 
       animationId = null;
     }
-
-    // Reset scores or other game state if needed
-    console.log('Game stopped and reset.');
   }
 
 
@@ -1181,18 +1177,14 @@ function startPong(pongCanvas: HTMLCanvasElement): void {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // Only run this code for mobile devices
   if (window.innerWidth <= 768) {
     const content = document.querySelector('.content');
     if (content) {
-      // Get all sections
       const sections = content.querySelectorAll('section');
-      // Convert NodeList to Array and sort by desired order
       const sortedSections = Array.from(sections).sort((a, b) => {
-        const order = { about: 1, experience: 2, studies: 3 };
-        return order[a.id] - order[b.id];
+        const order: Record<string, number> = { about: 1, experience: 2, studies: 3 };
+        return (order[a.id] || 0) - (order[b.id] || 0);
       });
-      // Reappend sections in correct order
       sortedSections.forEach(section => {
         content.appendChild(section);
       });
