@@ -8,41 +8,58 @@ const { title = "Axel VarAI - Portfolio" } = Astro.props;
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/AV_logo.png" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script
+      type="text/partytown"
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-T11PR41CB6"></script>
+    <script type="text/partytown">
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-T11PR41CB6");
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/AV_logo.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
 
 <style is:global>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-	:root {
-		--bg-color: #0a192f;
-		--text-color: #94A3B8;
-		--text-color-rgb: 148, 163, 184;
-		--highlight-color: #E2E8F0;
-		--highlight-color-rgb: 226, 232, 240;
-		--hover-highlight-color: #5eead4;
-	}
+  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+  :root {
+    --bg-color: #0a192f;
+    --text-color: #94a3b8;
+    --text-color-rgb: 148, 163, 184;
+    --highlight-color: #e2e8f0;
+    --highlight-color-rgb: 226, 232, 240;
+    --hover-highlight-color: #5eead4;
+  }
 
-	html {
-		scroll-behavior: smooth;
-	}
+  html {
+    scroll-behavior: smooth;
+  }
 
-	body {
-		margin: 0;
-		padding: 0;
-		width: 100%;
-		height: 100%;
-		font-family: 'Inter', sans-serif;
-		background-color: var(--bg-color);
-		color: var(--text-color);
-	}
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: "Inter", sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
 </style>
